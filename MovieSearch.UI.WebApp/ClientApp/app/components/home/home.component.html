@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-sm-12">
+        <form class="" #searchForm="ngForm" (ngSubmit)="searchMovie(searchForm)">
+            <div class="form-group">
+                <input ngModel class="form-control input-lg" type="text" name="searchText" value="" placeholder="Write a movie name and press ENTER" required />
+            </div>
+        </form>
+    </div>
+</div>
+
+<br />
+<div class="jumbotron" *ngIf="!movie && !error">
+    <h2>Welcome to Movie Search</h2>
+    <p>To search a movie enter a movie name and press ENTER</p>
+</div>
+
+<div *ngIf="movie" class="row">
+    <div class="col-sm-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="">
+                    <div class="form-group">
+                        <label class="control-label">Title</label>
+                        <p class="form-control-static">{{ movie.title }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Year</label>
+                        <p class="form-control-static">{{ movie.year }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Last Update Time</label>
+                        <p class="form-control-static">{{ movie.lastUpdateTime | date:'medium' }}</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="img-responsive" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="error">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="alert alert-warning">
+                Movie not found
+            </div>
+        </div>
+    </div>
+</div>
