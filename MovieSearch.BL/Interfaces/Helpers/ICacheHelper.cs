@@ -8,7 +8,7 @@ namespace MovieSearch.BL.Interfaces.Helpers
     {
         string GenerateCacheKey(string cacheKey, params object[] args);
 
-        void Reset(string cacheKey);
+        void Clear();
 
         object Get(string cacheKey);
 

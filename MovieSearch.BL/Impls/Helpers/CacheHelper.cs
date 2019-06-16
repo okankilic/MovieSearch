@@ -13,7 +13,7 @@ namespace MovieSearch.BL.Impls.Helpers
 {
     public class CacheHelper: ICacheHelper
     {
-        static CancellationChangeToken cancellationChangeToken = new CancellationChangeToken(new CancellationToken());
+        static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         const string RegionName = "MovieSearch";
 
@@ -101,11 +101,15 @@ namespace MovieSearch.BL.Impls.Helpers
             return stringBuilder.ToString();
         }
 
-        public void Reset(string cacheKey)
+        public void Clear()
         {
-            var cts = cache.Get<CancellationTokenSource>("cts");
+            if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested && cancellationTokenSource.Token.CanBeCanceled)
+            {
+                cancellationTokenSource.Cancel();
+                cancellationTokenSource.Dispose();
+            }
 
-            cts.Cancel();
+            cancellationTokenSource = new CancellationTokenSource();
         }
 
         public object Get(string cacheKey)
@@ -122,7 +126,7 @@ namespace MovieSearch.BL.Impls.Helpers
         {
             var options = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(SlidingExpirationTime)
-                .AddExpirationToken(cancellationChangeToken);
+                .AddExpirationToken(new CancellationChangeToken(cancellationTokenSource.Token));
 
             cache.Set(cacheKey, cacheObject, options);
         }
