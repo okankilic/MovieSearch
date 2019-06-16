@@ -27,13 +27,9 @@ Do you have any additional comments about this?
 ● Do you have additional comments?
 
 # Bonus
-+ Cache on Redis or Memcached
-● Docker-Compose.yml file for systems that your project depends on.
-● Log on MongoDb or another noSql tool.
-+ Using React or Angular.js in frontend.
-+ Clear all cache one keyword. For example api call like:
-[HttpGet]api/cache/clear
-
+● Cache on Redis or Memcached
+● Using React or Angular.js in frontend.
+● Clear all cache one keyword. For example api call like: [HttpGet]api/cache/clear
 
 # Notes
 - Predefined email: test@test.com & password: test
