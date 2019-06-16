@@ -53,5 +53,36 @@ namespace MovieSearch.BL.Impls.Services
 
             return movie;
         }
+
+        public async Task<Movie> GetByIdAsync(string id)
+        {
+            Movie movie = null;
+
+            string urlBase = configuration.GetSection("OmDb").GetValue<string>("Url");
+
+            string url = $"{urlBase}&r=json&i={id}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            request.Headers.Add("Accept", "application/json");
+
+            var client = httpClientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string strResponse = await response.Content.ReadAsStringAsync();
+
+                var searchResponse = JsonConvert.DeserializeObject<MovieGetByIdResponse>(strResponse);
+
+                if (searchResponse.Response)
+                {
+                    movie = searchResponse;
+                }
+            }
+
+            return movie;
+        }
     }
 }

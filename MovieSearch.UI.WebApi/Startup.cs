@@ -18,6 +18,11 @@ using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.UI.WebApi.Impls.Filters;
 using System;
 using System.Text;
+using Hangfire;
+using Hangfire.SqlServer;
+using Microsoft.Extensions.Logging;
+using MovieSearch.UI.WebApi.Impls.Jobs;
+using MovieSearch.UI.WebApi.Intefaces;
 
 namespace MovieSearch.UI.WebApi
 {
@@ -41,6 +46,8 @@ namespace MovieSearch.UI.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("MovieSearchDbContext");
+
             var secret = Configuration.GetSection("Jwt").GetValue<string>("Secret");
 
             services
@@ -70,7 +77,7 @@ namespace MovieSearch.UI.WebApi
                     //options
                     //    .UseInMemoryDatabase("MovieSearchDbContext")
                     //    .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-                    options.UseSqlServer(Configuration.GetConnectionString("MovieSearchDbContext"));
+                    options.UseSqlServer(connectionString);
                 });
 
             services
@@ -88,6 +95,26 @@ namespace MovieSearch.UI.WebApi
 
             services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
 
+            services.AddTransient<IJobFactory, JobFactory>();
+
+            // Add Hangfire services.
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                }));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.Populate(services);
@@ -99,14 +126,23 @@ namespace MovieSearch.UI.WebApi
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env)
+            IBackgroundJobClient backgroundJobs,
+            IHostingEnvironment env,
+            IJobFactory jobFactory)
         {
+            int hangfireIntervalInMinutes = Configuration.GetSection("Hangfire").GetValue<int>("IntervalInMinutes");
+
+            var cronString = Cron.MinuteInterval(hangfireIntervalInMinutes);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseAuthentication();
+            app.UseHangfireDashboard();
+
+            RecurringJob.AddOrUpdate(() => jobFactory.CreateNew("UpdateMoviesJob").DoJob(), cronString);
 
             app.UseMvc();
         }

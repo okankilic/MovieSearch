@@ -9,5 +9,6 @@ namespace MovieSearch.BL.Intefaces.Services
     public interface IMovieService
     {
         Task<Movie> Search(string s);
+        Task<Movie> GetByIdAsync(string id);
     }
 }

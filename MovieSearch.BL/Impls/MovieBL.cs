@@ -87,5 +87,30 @@ namespace MovieSearch.BL.Impls
 
             return movie;
         }
+
+        public async Task UpdateAll(IUnitOfWork uow)
+        {
+            var movies = uow.MovieRepository.Find();
+
+            if(movies.Count() == 0)
+            {
+                return;
+            }
+
+            foreach (var exMovie in movies)
+            {
+                var movie = await movieService.GetByIdAsync(exMovie.ImdbId);
+
+                exMovie.Title = movie.Title;
+                exMovie.Year = movie.Year;
+                exMovie.Type = movie.Type;
+                exMovie.Poster = movie.Poster;
+
+                exMovie.LastUpdateTime = DateTime.Now;
+            }
+
+            uow.SaveChanges();
+            uow.Commit();
+        }
     }
 }

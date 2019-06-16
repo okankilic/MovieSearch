@@ -13,5 +13,7 @@ namespace MovieSearch.BL.Interfaces
         void Create(Movie movie, IUnitOfWork uow);
 
         Task<Movie> SearchAsync(string s, IUnitOfWork uow);
+
+        Task UpdateAll(IUnitOfWork uow);
     }
 }
