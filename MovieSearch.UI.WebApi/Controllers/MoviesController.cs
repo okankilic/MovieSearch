@@ -32,6 +32,11 @@ namespace MovieSearch.UI.WebApi.Controllers
         {
             Movie movie = null;
 
+            if (string.IsNullOrEmpty(s))
+            {
+                return BadRequest();
+            }
+
             using (var uow = unitOfWorkFactory.CreateNew())
             {
                 movie = await movieBL.SearchAsync(s, uow);

@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MovieSearch.BL.Impls;
+using MovieSearch.BL.Impls.Helpers;
 using MovieSearch.BL.Impls.Services;
 using MovieSearch.BL.Intefaces.Services;
 using MovieSearch.BL.Interfaces;
+using MovieSearch.BL.Interfaces.Helpers;
 using MovieSearch.Domain.Data.Impls;
 using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.UI.WebApi.Impls.Filters;
@@ -66,16 +67,21 @@ namespace MovieSearch.UI.WebApi
             services
                 .AddDbContext<MovieSearchDbContext>(options =>
                 {
-                    options
-                        .UseInMemoryDatabase("MovieSearchDb")
-                        .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-                    //options.UseSqlServer(Configuration.GetConnectionString("MovieSearchDb"));
+                    //options
+                    //    .UseInMemoryDatabase("MovieSearchDbContext")
+                    //    .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                    options.UseSqlServer(Configuration.GetConnectionString("MovieSearchDbContext"));
                 });
 
             services
                 .AddHttpClient();
 
-            services.AddTransient<IMovieService, MovieService>();
+            services
+                .AddMemoryCache();
+
+            services.AddTransient<IMovieService, OmDbMovieService>();
+
+            services.AddSingleton<ICacheHelper, CacheHelper>();
 
             services.AddTransient<IMovieBL, MovieBL>();
             services.AddTransient<IUserBL, UserBL>();

@@ -11,11 +11,6 @@ namespace MovieSearch.Domain.Data.Impls
 
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //}
-
         public DbSet<User> Users { get; set; }
         public DbSet<Movie> Movies { get; set; }
     }

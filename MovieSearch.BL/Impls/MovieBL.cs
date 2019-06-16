@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieSearch.BL.Intefaces.Services;
 using MovieSearch.BL.Interfaces;
+using MovieSearch.BL.Interfaces.Helpers;
 using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.Domain.Data.Models;
 using System;
@@ -12,10 +13,13 @@ namespace MovieSearch.BL.Impls
     public class MovieBL: IMovieBL
     {
         private readonly IMovieService movieService;
+        private readonly ICacheHelper cacheHelper;
 
-        public MovieBL(IMovieService movieService)
+        public MovieBL(IMovieService movieService,
+            ICacheHelper cacheHelper)
         {
             this.movieService = movieService;
+            this.cacheHelper = cacheHelper;
         }
 
         public void Create(Movie movie, IUnitOfWork uow)
@@ -26,13 +30,41 @@ namespace MovieSearch.BL.Impls
 
         public async Task<Movie> SearchAsync(string s, IUnitOfWork uow)
         {
-            var movies = uow.MovieRepository.Find(q => q.Title.ToUpperInvariant().Contains(s.ToUpperInvariant()));
+            var cacheKey = cacheHelper.GenerateCacheKey("SearchAsync", "s", s);
+            var cached = cacheHelper.Get(cacheKey);
 
-            var movie = await movies.FirstOrDefaultAsync();
+            if (cached != null)
+            {
+                return cached as Movie;
+            }
 
-            if(movie == null)
+            var movie = await SearchInDb(s, uow);
+            if (movie == null)
             {
                 movie = await SearchInService(s, uow, movie);
+            }
+
+            if (movie != null)
+            {
+                cacheHelper.Set(cacheKey, movie);
+            }
+
+            return movie;
+        }
+
+        private async Task<Movie> SearchInDb(string s, IUnitOfWork uow)
+        {
+            Movie movie = null;
+
+            if (string.IsNullOrEmpty(s))
+            {
+                movie = await uow.MovieRepository.Find().FirstOrDefaultAsync();
+            }
+            else
+            {
+                var movies = uow.MovieRepository.Find(q => q.Title.ToUpperInvariant().Contains(s.ToUpperInvariant()));
+
+                movie = await movies.FirstOrDefaultAsync();
             }
 
             return movie;

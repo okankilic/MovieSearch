@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace MovieSearch.BL.Impls.Services
 {
-    public class MovieService : IMovieService
+    public class OmDbMovieService : IMovieService
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IConfiguration configuration;
 
-        public MovieService(IHttpClientFactory httpClientFactory,
+        public OmDbMovieService(IHttpClientFactory httpClientFactory,
             IConfiguration configuration)
         {
             this.httpClientFactory = httpClientFactory;

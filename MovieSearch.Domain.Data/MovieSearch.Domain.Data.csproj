@@ -5,8 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190616152917_InitialCreate.cs" />
+    <Compile Remove="Migrations\20190616153530_InitialCreate.cs" />
+    <Compile Remove="Migrations\20190616153755_InitialCreate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview6.19304.6" />
   </ItemGroup>
 
   <ItemGroup>

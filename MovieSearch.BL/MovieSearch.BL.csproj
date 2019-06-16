@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts">
+      <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.visualstudio.web.codegeneration.contracts\2.0.3\lib\netstandard2.0\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>

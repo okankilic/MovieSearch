@@ -8,6 +8,7 @@ namespace MovieSearch.Domain.Data.Models
     public class Movie
     {
         [Key]
+        [Required]
         public string ImdbId { get; set; }
 
         [Required]

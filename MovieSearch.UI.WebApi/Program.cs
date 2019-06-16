@@ -31,7 +31,7 @@ namespace MovieSearch.UI.WebApi
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Stopped program because of exception");
+                logger.Error(ex, ex.Message);
                 throw;
             }
             finally

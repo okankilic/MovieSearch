@@ -32,28 +32,28 @@ namespace MovieSearch.Domain.Data.Impls
                 context.SaveChanges();
             }
 
-            if (!context.Movies.Any())
-            {
-                context.Movies.AddRange(
-                    new Movie()
-                    {
-                        ImdbId = "tt0468569",
-                        Title = "The Dark Knight",
-                        Year = "2018",
-                        Type = "movie",
-                        Poster = "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg"
-                    },
-                    new Movie()
-                    {
-                        ImdbId = "tt1345836",
-                        Title = "The Dark Knight Rises",
-                        Year = "2012",
-                        Type = "movie",
-                        Poster = "https://m.media-amazon.com/images/M/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_SX300.jpg"
-                    });
+            //if (!context.Movies.Any())
+            //{
+            //    context.Movies.AddRange(
+            //        new Movie()
+            //        {
+            //            ImdbId = "tt0468569",
+            //            Title = "The Dark Knight",
+            //            Year = "2018",
+            //            Type = "movie",
+            //            Poster = "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg"
+            //        },
+            //        new Movie()
+            //        {
+            //            ImdbId = "tt1345836",
+            //            Title = "The Dark Knight Rises",
+            //            Year = "2012",
+            //            Type = "movie",
+            //            Poster = "https://m.media-amazon.com/images/M/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_SX300.jpg"
+            //        });
 
-                context.SaveChanges();
-            }
+            //    context.SaveChanges();
+            //}
         }
     }
 }
