@@ -23,6 +23,8 @@ using Hangfire.SqlServer;
 using Microsoft.Extensions.Logging;
 using MovieSearch.UI.WebApi.Impls.Jobs;
 using MovieSearch.UI.WebApi.Intefaces;
+using System.Threading;
+using Microsoft.Extensions.Primitives;
 
 namespace MovieSearch.UI.WebApi
 {
