@@ -25,8 +25,12 @@ namespace MovieSearch.BL.Impls
 
         public void Create(Movie movie, IUnitOfWork uow)
         {
+            movie.LastUpdateTime = DateTime.Now;
+
             uow.MovieRepository.Create(movie);
+
             uow.SaveChanges();
+            uow.Commit();
         }
 
         public async Task<Movie> SearchAsync(string s, IUnitOfWork uow)
@@ -78,9 +82,7 @@ namespace MovieSearch.BL.Impls
 
             if (movie != null)
             {
-                uow.MovieRepository.Create(movie);
-                uow.SaveChanges();
-                uow.Commit();
+                Create(movie, uow);
             }
 
             return movie;

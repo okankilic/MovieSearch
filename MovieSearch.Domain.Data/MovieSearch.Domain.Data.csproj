@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190616152917_InitialCreate.cs" />
-    <Compile Remove="Migrations\20190616153530_InitialCreate.cs" />
-    <Compile Remove="Migrations\20190616153755_InitialCreate.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>
 

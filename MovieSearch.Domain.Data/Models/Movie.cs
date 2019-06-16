@@ -19,5 +19,7 @@ namespace MovieSearch.Domain.Data.Models
         public string Type { get; set; }
 
         public string Poster { get; set; }
+
+        public DateTime LastUpdateTime { get; set; }
     }
 }

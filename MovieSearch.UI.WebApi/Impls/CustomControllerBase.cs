@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MovieSearch.UI.WebApi.Impls
 {
-    [Authorize]
+    //[Authorize]
     public class CustomControllerBase : Controller
     {
     }
