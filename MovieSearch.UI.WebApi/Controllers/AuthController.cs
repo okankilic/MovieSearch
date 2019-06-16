@@ -1,27 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieSearch.BL.Interfaces;
-using MovieSearch.Domain.Data;
-using MovieSearch.Domain.Data.Impls;
-using MovieSearch.Domain.Data.Impls.Helpers;
 using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.Domain.Data.Models;
 using MovieSearch.UI.WebApi.Impls;
+using System.Threading.Tasks;
 
 namespace MovieSearch.UI.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Auth")]
-    public class AuthController : CustomControllerBase
+    public class AuthController : Controller
     {
         private readonly IUserBL userBL;
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
@@ -51,19 +39,12 @@ namespace MovieSearch.UI.WebApi.Controllers
                 return BadRequest();
             }
 
-            User dbUser = null;
+            string token = string.Empty;
 
             using (var uow = unitOfWorkFactory.CreateNew())
             {
-                dbUser = await userBL.SearchAsync(user.Email, user.Password, uow);
+                token = await userBL.LoginAsync(user.Email, user.Password, uow);
             }
-
-            if (dbUser == null)
-            {
-                return Unauthorized();
-            }
-
-            var token = AuthHelper.CreateToken(dbUser.Email);
 
             return Ok(new { Token = token });
         }

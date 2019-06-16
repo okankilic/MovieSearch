@@ -31,7 +31,9 @@ namespace MovieSearch.UI.WebApi.Impls.Filters
 
             string message = string.Empty;
 
-            HttpStatusCode status = HttpStatusCode.InternalServerError;
+            var status = HttpStatusCode.InternalServerError;
+
+            string stackTrace = string.Empty;
 
             if(ex is BusinessException)
             {
@@ -47,6 +49,7 @@ namespace MovieSearch.UI.WebApi.Impls.Filters
             {
                 message = "Unexpected error occured. " + ex.Message;
                 status = HttpStatusCode.InternalServerError;
+                stackTrace = ex.StackTrace;
             }
 
             context.ExceptionHandled = true;
@@ -60,7 +63,7 @@ namespace MovieSearch.UI.WebApi.Impls.Filters
             {
                 StatusCode = (int)status,
                 Message = message,
-                StackTrace = ex.StackTrace
+                StackTrace = stackTrace
             };
 
             var exMessage = JsonConvert.SerializeObject(exceptionDetails);

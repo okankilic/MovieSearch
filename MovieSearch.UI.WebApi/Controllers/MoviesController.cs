@@ -2,6 +2,7 @@
 using MovieSearch.BL.Interfaces;
 using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.Domain.Data.Models;
+using MovieSearch.Domain.Data.Models.Exceptions;
 using MovieSearch.UI.WebApi.Impls;
 using System.Threading.Tasks;
 
@@ -31,11 +32,6 @@ namespace MovieSearch.UI.WebApi.Controllers
         public async Task<IActionResult> GetMovies(string s = null)
         {
             Movie movie = null;
-
-            if (string.IsNullOrEmpty(s))
-            {
-                return BadRequest();
-            }
 
             using (var uow = unitOfWorkFactory.CreateNew())
             {

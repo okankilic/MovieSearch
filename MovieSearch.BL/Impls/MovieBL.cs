@@ -4,6 +4,7 @@ using MovieSearch.BL.Interfaces;
 using MovieSearch.BL.Interfaces.Helpers;
 using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.Domain.Data.Models;
+using MovieSearch.Domain.Data.Models.Exceptions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,6 +31,8 @@ namespace MovieSearch.BL.Impls
 
         public async Task<Movie> SearchAsync(string s, IUnitOfWork uow)
         {
+            ValidateForSearch(s);
+
             var cacheKey = cacheHelper.GenerateCacheKey("SearchAsync", "s", s);
             var cached = cacheHelper.Get(cacheKey);
 
@@ -52,20 +55,19 @@ namespace MovieSearch.BL.Impls
             return movie;
         }
 
-        private async Task<Movie> SearchInDb(string s, IUnitOfWork uow)
+        private static void ValidateForSearch(string s)
         {
-            Movie movie = null;
-
             if (string.IsNullOrEmpty(s))
             {
-                movie = await uow.MovieRepository.Find().FirstOrDefaultAsync();
+                throw new BusinessException("Search parameter cannot be null or empty");
             }
-            else
-            {
-                var movies = uow.MovieRepository.Find(q => q.Title.ToUpperInvariant().Contains(s.ToUpperInvariant()));
+        }
 
-                movie = await movies.FirstOrDefaultAsync();
-            }
+        private async Task<Movie> SearchInDb(string s, IUnitOfWork uow)
+        {
+            var movies = uow.MovieRepository.Find(q => q.Title.ToUpperInvariant().Contains(s.ToUpperInvariant()));
+
+            var movie = await movies.FirstOrDefaultAsync();
 
             return movie;
         }
