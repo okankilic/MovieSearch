@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieSearch.BL.Interfaces;
+using MovieSearch.Domain.Data.Impls;
 using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.Domain.Data.Models;
 using MovieSearch.UI.WebApi.Impls;
@@ -15,10 +16,13 @@ namespace MovieSearch.UI.WebApi.Controllers
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
         public AuthController(IUserBL userBL,
-            IUnitOfWorkFactory unitOfWorkFactory)
+            IUnitOfWorkFactory unitOfWorkFactory,
+            MovieSearchDbContext movieSearchDbContext)
         {
             this.userBL = userBL;
             this.unitOfWorkFactory = unitOfWorkFactory;
+
+            SeedData.Initialize(movieSearchDbContext);
         }
 
         /// <summary>

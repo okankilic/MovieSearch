@@ -4,6 +4,7 @@ using MovieSearch.Domain.Data.Interfaces;
 using MovieSearch.Domain.Data.Models;
 using MovieSearch.Domain.Data.Models.Exceptions;
 using MovieSearch.UI.WebApi.Impls;
+using MovieSearch.UI.WebApi.Models;
 using System.Threading.Tasks;
 
 namespace MovieSearch.UI.WebApi.Controllers
@@ -28,14 +29,14 @@ namespace MovieSearch.UI.WebApi.Controllers
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> GetMovies(string s = null)
+        [HttpPost]
+        public async Task<IActionResult> PostMovie([FromBody]SearchMovieRequest request)
         {
             Movie movie = null;
 
             using (var uow = unitOfWorkFactory.CreateNew())
             {
-                movie = await movieBL.SearchAsync(s, uow);
+                movie = await movieBL.SearchAsync(request.SearchText, uow);
             }
 
             return Ok(movie);

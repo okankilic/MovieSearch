@@ -1,5 +1,6 @@
 import { JwtHelper } from 'angular2-jwt';
 import { Component } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'nav-menu',
@@ -8,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
 
-    constructor(private jwtHelper: JwtHelper) {
+    constructor(private router: Router, private jwtHelper: JwtHelper) {
     }
 
     isUserAuthenticated() {
@@ -23,5 +24,6 @@ export class NavMenuComponent {
 
     logOut() {
         localStorage.removeItem("jwt");
+        this.router.navigate(["login"]);
     }
 }
