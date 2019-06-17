@@ -9,21 +9,23 @@ using System.Threading.Tasks;
 
 namespace MovieSearch.UI.WebApi.Controllers
 {
+    /// <summary>
+    /// Cache operations
+    /// </summary>
     [Produces("application/json")]
     [Route("api/Cache")]
     public class CacheController : Controller
     {
         private readonly ICacheHelper cacheHelper;
-
+        
         public CacheController(ICacheHelper cacheHelper)
         {
             this.cacheHelper = cacheHelper;
         }
 
         /// <summary>
-        /// Login Funcionality
+        /// Clears all cache
         /// </summary>
-        /// <param name="user"></param>
         /// <returns></returns>
         [HttpGet, Route("clear")]
         public IActionResult ClearCache()

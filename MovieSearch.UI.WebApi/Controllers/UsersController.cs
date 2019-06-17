@@ -18,6 +18,9 @@ using MovieSearch.UI.WebApi.Impls;
 
 namespace MovieSearch.UI.WebApi.Controllers
 {
+    /// <summary>
+    /// User operations
+    /// </summary>
     [Produces("application/json")]
     [Route("api/Users")]
     public class UsersController : CustomControllerBase
@@ -34,7 +37,7 @@ namespace MovieSearch.UI.WebApi.Controllers
 
         // GET: api/Movies
         /// <summary>
-        /// Return All Users
+        /// Returns all users
         /// </summary>
         /// <returns></returns>
         [HttpGet]

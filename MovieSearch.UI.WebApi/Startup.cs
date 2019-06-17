@@ -25,6 +25,8 @@ using MovieSearch.UI.WebApi.Impls.Jobs;
 using MovieSearch.UI.WebApi.Intefaces;
 using System.Threading;
 using Microsoft.Extensions.Primitives;
+using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace MovieSearch.UI.WebApi
 {
@@ -88,6 +90,20 @@ namespace MovieSearch.UI.WebApi
             services
                 .AddMemoryCache();
 
+            services
+                .AddSwaggerGen(o =>
+                {
+                    o.SwaggerDoc("v1", new Info
+                    {
+                        Title = "MovieSearch.UI.WebApi",
+                        Version = "v1"
+                    });
+
+                    var filePath = Path.Combine(System.AppContext.BaseDirectory, "MovieSearch.UI.WebApi.xml");
+
+                    o.IncludeXmlComments(filePath);
+                });
+
             services.AddTransient<IMovieService, OmDbMovieService>();
 
             services.AddSingleton<ICacheHelper, CacheHelper>();
@@ -144,6 +160,12 @@ namespace MovieSearch.UI.WebApi
             app.UseHangfireDashboard();
 
             RecurringJob.AddOrUpdate(() => jobFactory.CreateNew("UpdateMoviesJob").DoJob(), cronString);
+
+            app.UseSwagger();
+            app.UseSwaggerUI(o =>
+            {
+                o.SwaggerEndpoint("../swagger/v1/swagger.json", "MovieSearch.UI.WebApi v1");
+            });
 
             app.UseMvc();
         }
