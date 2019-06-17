@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace MovieSearch.UI.WebApi.Controllers
 {
+    /// <summary>
+    /// Movie operations
+    /// </summary>
     [Produces("application/json")]
     [Route("api/Movies")]
     public class MoviesController : CustomControllerBase
@@ -23,11 +26,10 @@ namespace MovieSearch.UI.WebApi.Controllers
             this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        // GET: api/Movies
         /// <summary>
-        /// Search
+        /// Search movie by title
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> PostMovie([FromBody]SearchMovieRequest request)
@@ -41,24 +43,5 @@ namespace MovieSearch.UI.WebApi.Controllers
 
             return Ok(movie);
         }
-
-        // GET: api/Movies/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetMovie([FromRoute] string id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var movie = await context.Movies.SingleOrDefaultAsync(m => m.ImdbId == id);
-
-        //    if (movie == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(movie);
-        //}
     }
 }

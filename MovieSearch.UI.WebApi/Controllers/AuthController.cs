@@ -29,7 +29,7 @@ namespace MovieSearch.UI.WebApi.Controllers
         /// Login Funcionality
         /// </summary>
         /// <param name="user"></param>
-        /// <returns></returns>
+        /// <returns>token</returns>
         [HttpPost, Route("login")]
         public async Task<IActionResult> Login([FromBody]User user)
         {
