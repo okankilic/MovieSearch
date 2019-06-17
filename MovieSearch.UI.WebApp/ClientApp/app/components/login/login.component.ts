@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
 
+import { AppSettings } from '../../appsettings';
+
 @Component({
     selector: 'login',
     templateUrl: './login.component.html'
@@ -16,7 +18,8 @@ export class LoginComponent {
 
     login(form: NgForm) {
         let credentials = JSON.stringify(form.value);
-        this.http.post("http://localhost/MovieSearch.UI.WebApi/api/auth/Login", credentials, {
+        let settings = new AppSettings();
+        this.http.post(settings.movieSearchApiLoginUrl, credentials, {
             headers: new HttpHeaders({
                 "Content-Type": "application/json"
             })
