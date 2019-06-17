@@ -34,3 +34,4 @@ Do you have any additional comments about this?
 # Notes
 - Predefined email: test@test.com & password: test
 - To create database open Package Manager Console for MovieSearch.Domain.Data project, Run Add-Migration and then Run Update-Database commands
+- MovieSearch.UI.WebApi urls are strored in MovieSearch.UI.WebApp\ClientApp\app\appsettings.ts
