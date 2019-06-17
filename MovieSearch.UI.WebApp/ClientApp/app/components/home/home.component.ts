@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 
 import { NgForm } from '@angular/forms';
 
+import { AppSettings } from '../../appsettings';
+
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
@@ -36,8 +38,9 @@ export class HomeComponent {
 
         let credentials = JSON.stringify(form.value);
         let token = localStorage.getItem("jwt");
+        let settings = new AppSettings();
 
-        this.http.post("http://localhost/MovieSearch.UI.WebApi/api/movies", credentials, {
+        this.http.post(settings.movieSearchApiMovieSearchUrl, credentials, {
             headers: new HttpHeaders({
                 "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"

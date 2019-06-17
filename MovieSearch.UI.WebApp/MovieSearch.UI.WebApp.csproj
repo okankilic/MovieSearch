@@ -20,7 +20,11 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,18 +32,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\appsettings.ts" />
     <None Remove="ClientApp\app\components\guards\auth-guard.service.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\appsettings.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\guards\auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Impls\Extensions\" />
-    <Folder Include="Models\Exceptions\" />
   </ItemGroup>
 
   <ItemGroup>
