@@ -22,6 +22,7 @@ Do you have any additional comments about this?
 - Better Exception Handler mechanism
 - Role-Based Authentication
 - MongoDB connection
+- Tests
 - Much more refactoring :)
 
 ● Do you have additional comments?
@@ -32,6 +33,6 @@ Do you have any additional comments about this?
 - Clear all cache one keyword. For example api call like: [HttpGet]api/cache/clear
 
 # Notes
-- Predefined email: test@test.com & password: test
+- Predefined login info as email: test@test.com & password: test
 - To create database open Package Manager Console for MovieSearch.Domain.Data project, Run Add-Migration and then Run Update-Database commands
 - MovieSearch.UI.WebApi urls are strored in MovieSearch.UI.WebApp\ClientApp\app\appsettings.ts
